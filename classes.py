@@ -1,4 +1,4 @@
-import pygame 
+import pygame, math
 
 class Jogo:
     def __init__(self):
@@ -8,8 +8,6 @@ class Jogo:
         self.fundo = pygame.image.load('assets\img/ceu-estrelado.jpeg')
         self.passaro = pygame.image.load('assets\img/angry-birds-png.png')
         self.porco = pygame.image.load('assets\img/porco-angry-birds.png')
-        imagem_canhao = pygame.image.load('assets\img/rocket-launcher.png')
-        self.canhao = pygame.transform.scale(imagem_canhao, (200, 100))
 
     def roda(self):
         self.desenha()
@@ -21,16 +19,37 @@ class Jogo:
                 pygame.quit()
                 quit()
 
+class Canhao:
+    def __init__(self):
+        img_canhao = pygame.image.load('assets\img/rocket-launcher.png')
+        self.canhao_original = pygame.transform.scale(img_canhao, (200,100))
+        self.canhao_rotacionado = self.canhao_original
+        self.pos_canhao = (10,490)
+
+    def desenha_canhao(self,window):
+        window.blit(self.canhao_rotacionado, self.pos_canhao)
+
+    def rotaciona_canhao(self):
+        mouse_x, mouse_y = pygame.mouse.get_pos()
+        rel_x, rel_y = mouse_x - self.pos_canhao[0], mouse_y - self.pos_canhao[1]
+        angle = math.degrees(math.atan2(-rel_y, rel_x))
+        self.canhao_rotacionado = pygame.transform.rotate(self.canhao_original, angle)
+
+
 class TelaJogo(Jogo):
     def __init__(self):
         super().__init__()
-        self.window.fill((0,0,0))        
+        self.window.fill((0,0,0))      
+        self.canhao = Canhao()  
 
     def desenha(self):
         self.window.blit(self.fundo, (0,0))
-        self.window.blit(self.canhao, (10,490))
+        self.canhao.desenha_canhao(self.window)
 
     def update(self):
+
+        self.canhao.rotaciona_canhao()
+
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
