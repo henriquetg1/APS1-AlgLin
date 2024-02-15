@@ -5,9 +5,12 @@ class Jogo:
         pygame.init()
         pygame.display.set_caption('APS1 ALG LIN')
         self.window = pygame.display.set_mode((800,600))
-        self.fundo = pygame.image.load('assets/img/fundo.png')
+        self.fundo = pygame.image.load('assets\img/ceu-estrelado.jpeg')
+        self.passaro = pygame.image.load('assets\img/angry-birds-png.png')
+        self.porco = pygame.image.load('assets\img/porco-angry-birds.png')
 
     def roda(self):
+        self.desenha()
         pygame.display.update()
 
     def update(self):
@@ -20,6 +23,12 @@ class TelaJogo(Jogo):
     def __init__(self):
         super().__init__()
         self.window.fill((0,0,0))
+
+    def desenha(self):
+        self.window.blit(self.fundo, (0,0))
+        self.window.blit(self.passaro, (100,100))
+        self.window.blit(self.porco, (600,100))
+
 
     def update(self):
         for event in pygame.event.get():
