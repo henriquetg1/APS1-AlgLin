@@ -34,48 +34,17 @@ class Canhao:
     def __init__(self):
         img_canhao = pygame.image.load('assets\img/rocket-launcher.png')
         self.canhao_original = pygame.transform.scale(img_canhao, (200,100))
-        self.canhao_rotacionado = self.canhao_original
         self.pos_canhao = (10,600)
+        # self.eixo_rotacao ser não mais no centro da imagem e sim a borda esquerda
+        self.eixo_rotacao = (self.pos_canhao[0], self.pos_canhao[1] + 100)
+        self.canhao_rotacionado = self.canhao_original
 
-    def desenha_canhao(self,window):
+    def desenha_canhao(self, window):
         window.blit(self.canhao_rotacionado, self.pos_canhao)
 
     def rotaciona_canhao(self):
         mouse_x, mouse_y = pygame.mouse.get_pos()
-        rel_x, rel_y = mouse_x - self.pos_canhao[0], mouse_y - self.pos_canhao[1]
-        angle = math.degrees(math.atan2(-rel_y, rel_x))
-        self.canhao_rotacionado = pygame.transform.rotate(self.canhao_original, angle)
-
-class Passaro: 
-    def __init__(self):
-        img_passaro = pygame.image.load('assets\img/angry-birds-png.png')
-        self.passaro = pygame.transform.scale(img_passaro, (50,50))
-        self.rect_passaro = self.passaro.get_rect()
-        self.condicao_passaro = False
-
-    def desenha_disparo(self,window):
-        if self.condicao_passaro:
-            window.blit(self.passaro, self.rect_passaro)
-
-    def atira_disparo(self):
-        mouse_x, mouse_y = pygame.mouse.get_pos()
-        rel_x, rel_y = mouse_x - self.pos_disparo[0], mouse_y - self.pos_disparo[1]
-        angle = math.degrees(math.atan2(-rel_y, rel_x))
-        self.disparo = pygame.transform.rotate(self.disparo, angle)
-
-class Canhao:
-    def __init__(self):
-        img_canhao = pygame.image.load('assets\img/rocket-launcher.png')
-        self.canhao_original = pygame.transform.scale(img_canhao, (200,100))
-        self.canhao_rotacionado = self.canhao_original
-        self.pos_canhao = (10,600)
-
-    def desenha_canhao(self,window):
-        window.blit(self.canhao_rotacionado, self.pos_canhao)
-
-    def rotaciona_canhao(self):
-        mouse_x, mouse_y = pygame.mouse.get_pos()
-        rel_x, rel_y = mouse_x - self.pos_canhao[0], mouse_y - self.pos_canhao[1]
+        rel_x, rel_y = mouse_x - self.eixo_rotacao[0], mouse_y - self.eixo_rotacao[1]
         angle = math.degrees(math.atan2(-rel_y, rel_x))
         self.canhao_rotacionado = pygame.transform.rotate(self.canhao_original, angle)
 
