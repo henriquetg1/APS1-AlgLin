@@ -1,31 +1,27 @@
-import pygame
-import math
-import random
+import pygame, math, random
 
 pygame.init()
 
 WHITE = (255, 255, 255)
-RED = (255, 0, 0)
 BLACK = (0, 0, 0)
 
 WIDTH, HEIGHT = 900, 675
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("APS1")
 
-BARRA_LENGTH = 20 # Tamanho barra
-
-class Barra(pygame.sprite.Sprite):
+class Nave(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
-        self.original_image = pygame.Surface((BARRA_LENGTH, 5))
-        self.original_image.fill(RED)
+        self.original_image = pygame.image.load("assets/img/nave.png").convert_alpha()
+        self.original_image = pygame.transform.scale(self.original_image, (100, 100))
         self.image = self.original_image.copy()
-        self.rect = self.image.get_rect(center=(75, HEIGHT - 45)) # Posição inicial da barra
+        self.rect = self.image.get_rect(center=(75, HEIGHT - 75)) # Posição inicial da nave
         self.angle = 0
 
     def update(self):
         mouse_pos = pygame.mouse.get_pos()
         self.angle = math.atan2(mouse_pos[1] - self.rect.centery, mouse_pos[0] - self.rect.centerx)
+        self.image = pygame.transform.rotate(self.original_image, math.degrees(-self.angle))
         self.rect = self.image.get_rect(center=self.rect.center)
 
 class Bala(pygame.sprite.Sprite):
@@ -59,8 +55,8 @@ class Estrela(pygame.sprite.Sprite):
         self.rect.y = random.randint(0, HEIGHT)
 
 all_sprites = pygame.sprite.Group()
-barra = Barra()
-all_sprites.add(barra)
+nave = Nave()
+all_sprites.add(nave)
 
 for i in range(50):
     estrela = Estrela()
@@ -74,7 +70,7 @@ while running:
             running = False
         elif event.type == pygame.MOUSEBUTTONDOWN:
             if event.button == 1:
-                bala = Bala(barra.rect.center, event.pos)
+                bala = Bala(nave.rect.center, event.pos)
                 all_sprites.add(bala)
 
     all_sprites.update()
