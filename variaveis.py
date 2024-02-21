@@ -1,0 +1,4 @@
+HEIGHT = 675
+WIDTH = 900
+BLACK = (0, 0, 0)
+WHITE = (255, 255, 255)

@@ -1,13 +1,5 @@
-import pygame, math, random
-
-pygame.init()
-
-WHITE = (255, 255, 255)
-BLACK = (0, 0, 0)
-
-WIDTH, HEIGHT = 900, 675
-screen = pygame.display.set_mode((WIDTH, HEIGHT))
-pygame.display.set_caption("APS1")
+import pygame, math, random 
+from variaveis import *
 
 class Nave(pygame.sprite.Sprite):
     def __init__(self):
@@ -44,7 +36,6 @@ class Bala(pygame.sprite.Sprite):
         if not pygame.Rect(0, 0, WIDTH, HEIGHT).colliderect(self.rect):
             self.kill()
 
-# Classe para criar estrelas no fundo
 class Estrela(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
@@ -53,30 +44,31 @@ class Estrela(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.x = random.randint(0, WIDTH)
         self.rect.y = random.randint(0, HEIGHT)
+        
+class CorpoCeleste(pygame.sprite.Sprite):
+    def __init__(self, position, mass):
+        super().__init__()
+        self.image = pygame.Surface((50, 50), pygame.SRCALPHA)
+        self.rect = self.image.get_rect(center=position)
+        pygame.draw.circle(self.image, WHITE, (25, 25), 25)  # Desenha o círculo
+        self.pos = pygame.math.Vector2(position)
+        self.mass = mass
 
-all_sprites = pygame.sprite.Group()
-nave = Nave()
-all_sprites.add(nave)
+    def calcular_forca_gravitacional(self, bala):
+        G = 1  # Constante gravitacional (pode ajustar conforme necessário)
+        direction = self.pos - bala.pos
+        distance_squared = max(1, direction.length_squared())  # Evitar divisão por zero
+        force_magnitude = (G * self.mass) / distance_squared
+        force = direction.normalize() * force_magnitude
+        return force
+    
+class Alvo(pygame.sprite.Sprite):
+    def __init__(self, position):
+        super().__init__()
+        self.image = pygame.Surface((50, 50), pygame.SRCALPHA)
+        self.rect = self.image.get_rect(center=position)
+        pygame.draw.circle(self.image, (50,50,50), (25, 25), 25)  # Desenha o círculo
 
-for i in range(50):
-    estrela = Estrela()
-    all_sprites.add(estrela)
-
-running = True
-clock = pygame.time.Clock()
-while running:
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            running = False
-        elif event.type == pygame.MOUSEBUTTONDOWN:
-            if event.button == 1:
-                bala = Bala(nave.rect.center, event.pos)
-                all_sprites.add(bala)
-
-    all_sprites.update()
-    screen.fill(BLACK)
-    all_sprites.draw(screen)
-    pygame.display.flip()
-    clock.tick(60)
-
-pygame.quit()
+    def verificar_colisao(self, bala):
+        if self.rect.colliderect(bala.rect):
+            print("A bala atingiu o alvo!")
