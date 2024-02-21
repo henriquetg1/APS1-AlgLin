@@ -23,7 +23,7 @@ class Jogo:
         self.WHITE = (255, 255, 255)
         self.BLACK = (0, 0, 0)
         self.RED = (255, 0, 0)
-        self.tiros = 15
+        self.tiros = 5
 
     def roda(self):
         self.desenha_tela_inicial_gameover()
@@ -45,13 +45,18 @@ class Jogo:
                         self.all_sprites.add(bala)
                         self.tiros -= 1
 
+        self.alvos = pygame.sprite.Group()
+        for sprite in self.all_sprites:
+            if isinstance(sprite, Alvo):
+                self.alvos.add(sprite)
+
         for bala in self.all_sprites:
             if isinstance(bala, Bala):
                 gravidade = self.corpo_celeste.calcular_forca_gravitacional(bala)
                 bala.vel += gravidade 
-                for alvo in self.all_sprites:
-                    if isinstance(alvo, Alvo) and alvo.rect.colliderect(bala.rect):
-                        self.num_alvos -= 1
+                colisoes = pygame.sprite.spritecollide(bala, self.alvos, True)
+                for alvo in colisoes:
+                    self.num_alvos -= 1
 
         self.all_sprites.update()
         pygame.display.flip()
@@ -92,6 +97,10 @@ class TelaJogo2(Jogo):
     def desenha_tela_inicial_gameover(self):
         pass
 
+    def update(self):
+        if self.num_alvos == 0:
+            return TelaJogo3()
+        return super().update() 
 
 class TelaJogo3(Jogo):
     def __init__(self):
@@ -106,6 +115,11 @@ class TelaJogo3(Jogo):
 
     def desenha_tela_inicial_gameover(self):
         pass
+
+    def update(self):
+        if self.num_alvos == 0:
+            return TelaInicial()
+        return super().update() 
 
 class TelaInicial(Jogo):
     def __init__(self):
