@@ -1,6 +1,7 @@
 from sprites import Nave, Bala, Estrela, CorpoCeleste, Alvo
 import pygame
 
+
 class Jogo:
     def __init__(self):
         pygame.init()
@@ -20,6 +21,7 @@ class Jogo:
         self.height = 675
         self.WHITE = (255, 255, 255)
         self.BLACK = (0, 0, 0)
+        self.RED = (255, 0, 0)
         self.tiros = 15
 
     def roda(self):
@@ -61,4 +63,51 @@ class TelaJogo1(Jogo):
         self.screen.fill(self.BLACK) 
         self.all_sprites.draw(self.screen)
 
-        
+class TelaInicial(Jogo):
+    def __init__(self):
+        super().__init__()
+        self.font = pygame.font.Font(None, 60)
+        self.text = self.font.render("Iniciar", True, self.BLACK)
+        self.text_rect = self.text.get_rect(center=(self.width // 2, self.height // 2))
+        self.text2 = self.font.render("Sair", True, self.BLACK)
+        self.text2_rect = self.text2.get_rect(center=(self.width // 2, self.height // 2 + 100))
+
+    def desenha(self):
+        self.screen.fill(self.BLACK)
+        pygame.draw.rect(self.screen, self.WHITE, self.text_rect)
+        self.screen.blit(self.text, self.text_rect)
+        pygame.draw.rect(self.screen, self.WHITE, self.text2_rect)
+        self.screen.blit(self.text2, self.text2_rect)
+
+    def update(self):
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                quit()
+            elif event.type == pygame.MOUSEBUTTONDOWN:
+                if self.text_rect.collidepoint(event.pos):
+                    return TelaJogo1()
+                elif self.text2_rect.collidepoint(event.pos):
+                    pygame.quit()
+                    quit()
+        return self
+
+class TelaGameOver(Jogo):
+    def __init__(self):
+        super().__init__()
+        self.font = pygame.font.Font(None, 60)
+        self.text = self.font.render("Game Over", True, self.WHITE)
+        self.text_rect = self.text.get_rect(center=(self.width // 2, self.height // 2))
+
+    def desenha(self):
+        self.screen.fill(self.BLACK)
+        pygame.draw.rect(self.screen, self.RED, self.text_rect)
+
+    def update(self):
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                quit()
+            elif event.type == pygame.MOUSEBUTTONDOWN:
+                return TelaInicial()
+        return self
