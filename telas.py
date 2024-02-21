@@ -3,7 +3,7 @@ import pygame
 
 
 class Jogo:
-    def __init__(self):
+    def __init__(self, num_alvos):
         pygame.init()
         pygame.display.set_caption('APS1 ALG LIN')
         self.width = 900
@@ -12,6 +12,7 @@ class Jogo:
         self.all_sprites = pygame.sprite.Group()
         self.nave = Nave()
         self.all_sprites.add(self.nave)
+        self.num_alvos = num_alvos
 
         for i in range(50):
             estrela = Estrela()
@@ -48,8 +49,9 @@ class Jogo:
             if isinstance(bala, Bala):
                 gravidade = self.corpo_celeste.calcular_forca_gravitacional(bala)
                 bala.vel += gravidade 
-                if pygame.sprite.spritecollide(self.alvo, self.all_sprites, False):
-                    self.alvo.verificar_colisao(bala)
+                for alvo in self.all_sprites:
+                    if isinstance(alvo, Alvo) and alvo.rect.colliderect(bala.rect):
+                        self.num_alvos -= 1
 
         self.all_sprites.update()
         pygame.display.flip()
@@ -65,7 +67,7 @@ class Jogo:
 
 class TelaJogo1(Jogo):
     def __init__(self):
-        super().__init__()
+        super().__init__(1)
         self.alvo = Alvo((self.width // 2 + 150, self.height // 2 - 300))
         self.corpo_celeste = CorpoCeleste((self.width // 2 - 50 , self.height // 2), 1000)  
         self.all_sprites.add(self.alvo, self.corpo_celeste)
@@ -73,9 +75,14 @@ class TelaJogo1(Jogo):
     def desenha_tela_inicial_gameover(self):    
         pass
 
+    def update(self):
+        if self.num_alvos == 0:
+            return TelaJogo2()
+        return super().update() 
+
 class TelaJogo2(Jogo):
     def __init__(self):
-        super().__init__()
+        super().__init__(2)
         self.alvo = Alvo((self.width // 2 + 150, self.height // 2 - 300))
         self.alvo2 = Alvo((self.width // 2 - 150, self.height // 2 - 300))
         self.corpo_celeste = CorpoCeleste((self.width // 2 - 50 , self.height // 2), 1000)  
@@ -85,9 +92,10 @@ class TelaJogo2(Jogo):
     def desenha_tela_inicial_gameover(self):
         pass
 
+
 class TelaJogo3(Jogo):
     def __init__(self):
-        super().__init__()
+        super().__init__(3)
         self.alvo = Alvo((self.width // 2 + 150, self.height // 2 - 300))
         self.alvo2 = Alvo((self.width // 2 - 150, self.height // 2 - 300))
         self.alvo3 = Alvo((self.width // 2 - 250, self.height // 2 - 300))
@@ -101,7 +109,7 @@ class TelaJogo3(Jogo):
 
 class TelaInicial(Jogo):
     def __init__(self):
-        super().__init__()
+        super().__init__(0)
         self.font = pygame.font.Font(None, 60)
         self.text = self.font.render("Iniciar", True, self.BLACK)
         self.text_rect = self.text.get_rect(center=(self.width // 2, self.height // 2))
@@ -133,7 +141,7 @@ class TelaInicial(Jogo):
 
 class TelaGameOver(Jogo):
     def __init__(self):
-        super().__init__()
+        super().__init__(0)
         self.font = pygame.font.Font(None, 60)
         self.text = self.font.render("Game Over", True, self.WHITE)
         self.text_rect = self.text.get_rect(center=(self.width // 2, self.height // 2))

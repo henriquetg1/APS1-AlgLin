@@ -68,7 +68,3 @@ class Alvo(pygame.sprite.Sprite):
         self.image = pygame.Surface((50, 50), pygame.SRCALPHA)
         self.rect = self.image.get_rect(center=position)
         pygame.draw.circle(self.image, (50,50,50), (25, 25), 25)  # Desenha o círculo
-
-    def verificar_colisao(self, bala):
-        if self.rect.colliderect(bala.rect):
-            print("A bala atingiu o alvo!")
