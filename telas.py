@@ -23,8 +23,8 @@ class Jogo:
         self.tiros = 15
 
     def roda(self):
-        self.desenha()
-        pygame.display.update()
+        self.desenha_telas()
+        pygame.display.update()        
 
     def update(self):
         clock = pygame.time.Clock()
@@ -34,8 +34,10 @@ class Jogo:
                 quit()
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 if event.button == 1:
-                    bala = Bala(self.nave.rect.center, event.pos)
-                    self.all_sprites.add(bala)
+                    if self.tiros > 0:
+                        bala = Bala(self.nave.rect.center, event.pos)
+                        self.all_sprites.add(bala)
+                        self.tiros -= 1
 
         for bala in self.all_sprites:
             if isinstance(bala, Bala):
@@ -48,17 +50,38 @@ class Jogo:
         pygame.display.flip()
         clock.tick(60)
         return self
+    
+    def desenha_telas(self):
+        self.screen.fill(self.BLACK) 
+        self.all_sprites.draw(self.screen)
+        fonte = pygame.font.Font(None, 36)
+        texto_vidas = fonte.render(f'Tiros: {self.tiros}', True, self.WHITE)
+        self.screen.blit(texto_vidas, (10, 10))
 
 class TelaJogo1(Jogo):
     def __init__(self):
         super().__init__()
-        self.alvo = Alvo((self.width // 2 + 50, self.height // 2 + 100))
+        self.alvo = Alvo((self.width // 2 + 150, self.height // 2 - 300))
         self.all_sprites.add(self.alvo)
-        self.corpo_celeste = CorpoCeleste((self.width // 2, self.height // 2), 1000)  
+        self.corpo_celeste = CorpoCeleste((self.width // 2 - 50 , self.height // 2), 1000)  
         self.all_sprites.add(self.corpo_celeste)
-    
-    def desenha(self):
-        self.screen.fill(self.BLACK) 
-        self.all_sprites.draw(self.screen)
 
-        
+class TelaJogo2(Jogo):
+    def __init__(self):
+        super().__init__()
+        self.alvo = Alvo((self.width // 2 + 150, self.height // 2 - 300))
+        self.alvo2 = Alvo((self.width // 2 - 150, self.height // 2 - 300))
+        self.corpo_celeste = CorpoCeleste((self.width // 2 - 50 , self.height // 2), 1000)  
+        self.corpo_celeste2 = CorpoCeleste((self.width // 2 + 50 , self.height // 2), 1000)  
+        self.all_sprites.add(self.corpo_celeste, self.corpo_celeste2, self.alvo, self.alvo2)
+
+class TelaJogo3(Jogo):
+    def __init__(self):
+        super().__init__()
+        self.alvo = Alvo((self.width // 2 + 150, self.height // 2 - 300))
+        self.alvo2 = Alvo((self.width // 2 - 150, self.height // 2 - 300))
+        self.alvo2 = Alvo((self.width // 2 - 250, self.height // 2 - 300))
+        self.corpo_celeste = CorpoCeleste((self.width // 2 - 50 , self.height // 2), 1000)  
+        self.corpo_celeste2 = CorpoCeleste((self.width // 2 + 50 , self.height // 2), 1000)  
+        self.corpo_celeste2 = CorpoCeleste((self.width // 2 + 150 , self.height // 2), 1000)  
+        self.all_sprites.add(self.corpo_celeste, self.corpo_celeste2, self.alvo, self.alvo2)
