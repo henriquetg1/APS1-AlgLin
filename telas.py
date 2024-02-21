@@ -26,10 +26,6 @@ class Jogo:
         self.desenha()
         pygame.display.update()
 
-    def desenha(self):
-        self.screen.fill(self.BLACK) 
-        self.all_sprites.draw(self.screen)
-
     def update(self):
         clock = pygame.time.Clock()
         for event in pygame.event.get():
@@ -61,5 +57,8 @@ class TelaJogo1(Jogo):
         self.corpo_celeste = CorpoCeleste((self.width // 2, self.height // 2), 1000)  
         self.all_sprites.add(self.corpo_celeste)
     
+    def desenha(self):
+        self.screen.fill(self.BLACK) 
+        self.all_sprites.draw(self.screen)
 
         
