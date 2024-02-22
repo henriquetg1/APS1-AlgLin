@@ -85,7 +85,9 @@ class Jogo:
     
     # Função que desenha tudo que as telas de jogo precisam, para deixar o código mais limpo e não precisar reescrever várias vezes
     def desenha_telas(self):
-        self.screen.fill(BLACK) 
+        # Desenha o fundo
+        self.screen.blit(self.background, (0, 0))
+        # Desenha os sprites
         self.all_sprites.draw(self.screen)
         fonte = pygame.font.Font(None, 36)
         texto_vidas = fonte.render(f'Tiros: {self.tiros - 1}', True, WHITE)
@@ -95,11 +97,10 @@ class Jogo:
 class TelaJogo1(Jogo):
     def __init__(self):
         super().__init__(1)
-        # Cria um alvo
-        self.alvo = Alvo((WIDTH // 2 + 150, HEIGHT // 2 - 300))
-        # Cria um corpo celeste
-        self.corpo_celeste = CorpoCeleste((WIDTH // 2 - 50 , HEIGHT // 2))  
-        # Adiciona os sprites ao grupo de sprites
+        self.background = pygame.image.load("assets\img\ceu-estrelado.jpeg").convert()
+        self.background = pygame.transform.scale(self.background, (self.width, self.height))
+        self.alvo = Alvo((self.width // 2 + 150, self.height // 2 - 300))
+        self.corpo_celeste = CorpoCeleste((self.width // 2 - 50, self.height // 2))  
         self.all_sprites.add(self.alvo, self.corpo_celeste)
 
     # Função que desenha a tela inicial e a tela de game over, tem que ser implementada nas telas de jogo para que seja ignorada
@@ -111,9 +112,15 @@ class TelaJogo1(Jogo):
         # Se a quantidade de alvos for igual a 0, retorna a próxima tela
         if self.num_alvos == 0:
             return TelaJogo2()
-        # Retorna a função update da classe Jogo
-        return super().update() 
-
+        return super().update()
+    
+    def desenha_telas(self):
+        self.screen.blit(self.background, (0, 0))
+        self.all_sprites.draw(self.screen)
+        fonte = pygame.font.Font(None, 36)
+        texto_vidas = fonte.render(f'Tiros: {self.tiros - 1}', True, self.WHITE)
+        self.screen.blit(texto_vidas, (10, 10))
+    
 class TelaJogo2(Jogo):
     def __init__(self):
         super().__init__(2)
@@ -135,21 +142,26 @@ class TelaJogo2(Jogo):
         # Se a quantidade de alvos for igual a 0, retorna a próxima tela
         if self.num_alvos == 0:
             return TelaJogo3()
-        # Retorna a função update da classe Jogo
-        return super().update() 
+        return super().update()
+    
+    def desenha_telas(self):
+        self.screen.blit(self.background, (0, 0))
+        self.all_sprites.draw(self.screen)
+        fonte = pygame.font.Font(None, 36)
+        texto_vidas = fonte.render(f'Tiros: {self.tiros - 1}', True, self.WHITE)
+        self.screen.blit(texto_vidas, (10, 10))
 
 class TelaJogo3(Jogo):
     def __init__(self):
         super().__init__(3)
-        # Cria três alvos
-        self.alvo = Alvo((WIDTH // 2 + 150, HEIGHT // 2 - 300))
-        self.alvo2 = Alvo((WIDTH // 2 - 150, HEIGHT // 2 - 300))
-        self.alvo3 = Alvo((WIDTH // 2 - 250, HEIGHT // 2 - 300))
-        # Cria três corpos celestes
-        self.corpo_celeste = CorpoCeleste((WIDTH // 2 - 50 , HEIGHT // 2))  
-        self.corpo_celeste2 = CorpoCeleste2((WIDTH // 2 + 50 , HEIGHT // 2))  
-        self.corpo_celeste3 = CorpoCeleste3((WIDTH // 2 + 150 , HEIGHT // 2))  
-        # Adiciona os sprites ao grupo de sprites
+        self.background = pygame.image.load("assets\img\ceu-estrelado.jpeg").convert()
+        self.background = pygame.transform.scale(self.background, (self.width, self.height))
+        self.alvo = Alvo((self.width // 2 + 150, self.height // 2 - 300))
+        self.alvo2 = Alvo((self.width // 2 - 150, self.height // 2 - 300))
+        self.alvo3 = Alvo((self.width // 2 - 250, self.height // 2 - 300))
+        self.corpo_celeste = CorpoCeleste((self.width // 2 - 325 , self.height // 2 - 50))  
+        self.corpo_celeste2 = CorpoCeleste2((self.width // 2 + 25 , self.height // 2 + 50))  
+        self.corpo_celeste3 = CorpoCeleste3((self.width // 2 + 300 , self.height // 2 - 100))  
         self.all_sprites.add(self.corpo_celeste, self.corpo_celeste2, self.corpo_celeste3, self.alvo, self.alvo2, self.alvo3)
 
     # Função que desenha a tela inicial e a tela de game over, tem que ser implementada nas telas de jogo para que seja ignorada
@@ -161,8 +173,14 @@ class TelaJogo3(Jogo):
         # Se a quantidade de alvos for igual a 0, retorna a próxima tela
         if self.num_alvos == 0:
             return TelaVenceu()
-        # Retorna a função update da classe Jogo
-        return super().update() 
+        return super().update()
+    
+    def desenha_telas(self):
+        self.screen.blit(self.background, (0, 0))
+        self.all_sprites.draw(self.screen)
+        fonte = pygame.font.Font(None, 36)
+        texto_vidas = fonte.render(f'Tiros: {self.tiros - 1}', True, self.WHITE)
+        self.screen.blit(texto_vidas, (10, 10))
 
 # Classe que representa a tela inicial do jogo, herda da classe Jogo.
 class TelaInicial(Jogo):

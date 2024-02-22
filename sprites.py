@@ -50,15 +50,6 @@ class Bala(pygame.sprite.Sprite):
         self.rect = self.image.get_rect(center=self.rect.center)
         if not pygame.Rect(0, 0, WIDTH, HEIGHT).colliderect(self.rect):
             self.kill()
-
-class Estrela(pygame.sprite.Sprite):
-    def __init__(self):
-        super().__init__()
-        self.image = pygame.Surface((2, 2))
-        self.image.fill(WHITE)
-        self.rect = self.image.get_rect()
-        self.rect.x = random.randint(0, WIDTH)
-        self.rect.y = random.randint(0, HEIGHT)
         
 class CorpoCeleste(pygame.sprite.Sprite):
     def __init__(self, position):
