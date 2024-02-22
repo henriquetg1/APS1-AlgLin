@@ -56,17 +56,16 @@ class CorpoCeleste(pygame.sprite.Sprite):
     def calcular_forca_gravitacional(self, bala):
         # Constante de gravitação universal
         c = 7500  
-        # Calcula os vetores da diferença entre a posição x e y do corpo celeste e da bala
+        # Calcula os vetores da diferença entre a posição x e y dos vetores do corpo celeste e da bala
         direction = self.pos - bala.pos
         # Calcula a hipotenusa do triângulo formado pela diferença entre a posição x e y do corpo celeste e da bala
         distance_squared = direction.x ** 2 + direction.y ** 2
         # Calcula a força gravitacional
-        force_magnitude = (c) / distance_squared
-        print(force_magnitude)
+        forca = (c) / distance_squared
         # Calcula o vetor da força gravitacional
-        force = direction.normalize() * force_magnitude
+        gravidade = direction.normalize() * forca
         # Retorna o vetor 
-        return force    
+        return gravidade    
 
 class Alvo(pygame.sprite.Sprite):
     def __init__(self, position):
