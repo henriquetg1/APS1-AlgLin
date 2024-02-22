@@ -18,27 +18,27 @@ Para calcularmos a força gravitacional utilizamos vetores. Primeiro começamos 
 ``` vetor_bala = pygame.math.Vector2(posicao_da_bala) ``` 
 ``` vetor_corpo_celeste = pygame.math.Vector2(posicao_do_corpo) ``` 
 
-Após isso decidimos que a constante de gravitação universal seria igual a 7500.
+Após isso decidimos que a constante de gravitação universal seria igual a 7500:
 
 ```c = 7500  ```
 
-E calculamos a diferença dos vetores da posição do corpo e da bala. 
+E calculamos o vetor da diferença dos vetores da posição do corpo e da bala:
 
 ``` vetor_diferenca = vetor_corpo_celeste - vetor_bala```
 
-Com essa distância descoberta, conseguimos aplicar o teorema de pitágoras e descobrir o vetor resultante: , que seria a hipotenusa do triangulo retângulo. 
+Com esse vetor descoberto, conseguimos aplicar o teorema de pitágoras e descobrir o vetor resultante que seria a hipotenusa de um triangulo retângulo formado por esses vetores: 
 
-``` hipotenusa = vetor_diferenca.x ** 2 + vetor_diferenca.y **```
+``` vetor_resultante = vetor_diferenca.x ** 2 + vetor_diferenca.y ** 2 ```
 
 Com isso, pegamos esse vetor e utilizamos a seguinte formula para calcular a força gravitacional:
 
-```forca_gravitacional = (c)/hipotenusa```
+```forca_gravitacional = (c)/vetor_resultante```
 
-Com essa força descoberta, agora conseguimos calular a gravidade. Ela é dada pela normalização do vetor da direção vezes a força gravitacional.
+Com essa força descoberta, agora conseguimos calular a gravidade. Ela é dada pela normalização do vetor da direção multiplicado pela força gravitacional:
 
-```gravidade = vetor_diferenca.normalize() * forca```
+```gravidade = vetor_diferenca.normalize() * forca_gravitacional```
 
-Agora, se a bala for atraída pelo campo gravitacional do corpo celeste sua velociade será somada à gravidade, alterando a sua trajetória. 
+Agora, se a bala for atraída pelo campo gravitacional do corpo celeste sua velociade será somada à gravidade, alterando a sua trajetória:
 
 ```velocidade_da_bala += gravidade```
 
