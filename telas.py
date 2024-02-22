@@ -124,18 +124,22 @@ class TelaJogo3(Jogo):
 class TelaInicial(Jogo):
     def __init__(self):
         super().__init__(0)
-        self.font = pygame.font.Font(None, 60)
-        self.text = self.font.render("Iniciar", True, self.BLACK)
-        self.text_rect = self.text.get_rect(center=(self.width // 2, self.height // 2))
-        self.text2 = self.font.render("Sair", True, self.BLACK)
-        self.text2_rect = self.text2.get_rect(center=(self.width // 2, self.height // 2 + 100))
+        self.logo_ = pygame.image.load('assets/img/INVASÃO ALIENÍGENA LOGO.png')
+        self.logo = pygame.transform.scale(self.logo_, (810, 150))
+        self.logo_rect = self.logo.get_rect(center=(self.width // 2, self.height // 2 - 150))
+        self.font = pygame.font.Font('assets/fonts/space-age.regular.ttf', 60)
+        self.text = self.font.render("Iniciar", True, self.WHITE)
+        self.text_rect = self.text.get_rect(center=(self.width // 2, self.height // 2+50))
+        self.text2 = self.font.render("Sair", True, self.WHITE)
+        self.text2_rect = self.text2.get_rect(center=(self.width // 2, self.height // 2 + 150))
 
     def desenha_tela_inicial_gameover(self):
         self.screen.fill(self.BLACK)
-        pygame.draw.rect(self.screen, self.WHITE, self.text_rect)
+        pygame.draw.rect(self.screen, self.BLACK, self.text_rect)
         self.screen.blit(self.text, self.text_rect)
-        pygame.draw.rect(self.screen, self.WHITE, self.text2_rect)
+        pygame.draw.rect(self.screen, self.BLACK, self.text2_rect)
         self.screen.blit(self.text2, self.text2_rect)
+        self.screen.blit(self.logo, self.logo_rect)
 
     def desenha_telas(self):
         pass
