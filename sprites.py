@@ -46,22 +46,28 @@ class Estrela(pygame.sprite.Sprite):
         self.rect.y = random.randint(0, HEIGHT)
         
 class CorpoCeleste(pygame.sprite.Sprite):
-    def __init__(self, position, mass):
+    def __init__(self, position):
         super().__init__()
         self.image = pygame.Surface((50, 50), pygame.SRCALPHA)
         self.rect = self.image.get_rect(center=position)
-        pygame.draw.circle(self.image, WHITE, (25, 25), 25)  # Desenha o círculo
+        pygame.draw.circle(self.image, WHITE, (25, 25), 25) 
         self.pos = pygame.math.Vector2(position)
-        self.mass = mass
 
     def calcular_forca_gravitacional(self, bala):
-        G = 1  # Constante gravitacional (pode ajustar conforme necessário)
+        # Constante de gravitação universal
+        c = 7500  
+        # Calcula os vetores da diferença entre a posição x e y do corpo celeste e da bala
         direction = self.pos - bala.pos
-        distance_squared = max(1, direction.length_squared())  # Evitar divisão por zero
-        force_magnitude = (G * self.mass) / distance_squared
+        # Calcula a hipotenusa do triângulo formado pela diferença entre a posição x e y do corpo celeste e da bala
+        distance_squared = direction.x ** 2 + direction.y ** 2
+        # Calcula a força gravitacional
+        force_magnitude = (c) / distance_squared
+        print(force_magnitude)
+        # Calcula o vetor da força gravitacional
         force = direction.normalize() * force_magnitude
-        return force
-    
+        # Retorna o vetor 
+        return force    
+
 class Alvo(pygame.sprite.Sprite):
     def __init__(self, position):
         super().__init__()
