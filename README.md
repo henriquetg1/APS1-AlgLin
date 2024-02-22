@@ -13,7 +13,36 @@ Para rodar o jogo, entre no arquivo roda.py e clique para rodar, ou se preferir 
 Após instalar o jogo, clique em iniciar. Para atirar, utilize o botão esquerdo do mouse. A velocidade é controlada por meio da onde o ponteiro do mouse se encontra, ou seja, o quanto mais perto da nave, mais devagar a bala irá, e o quão mais longe, mais rápido. 
 
 # Modelo físico
-Para calcularmos a velocidade
+Para calcularmos a força gravitacional utilizamos vetores. Primeiro começamos calculando a posição vetorial da bala e do corpo celeste. Ele é calculado por uma função da biblioteca PyGame e é dado por: [x,y]. 
+
+``` vetor_bala = pygame.math.Vector2(posicao_da_bala) ``` 
+``` vetor_corpo_celeste = pygame.math.Vector2(posicao_do_corpo) ``` 
+
+Após isso decidimos que a constante de gravitação universal seria igual a 7500.
+
+```c = 7500  ```
+
+E calculamos a diferença dos vetores da posição do corpo e da bala. 
+
+``` vetor_diferenca = vetor_corpo_celeste - vetor_bala```
+
+Com essa distância descoberta, conseguimos aplicar o teorema de pitágoras e descobrir o vetor resultante: , que seria a hipotenusa do triangulo retângulo. 
+
+``` hipotenusa = vetor_diferenca.x ** 2 + vetor_diferenca.y **```
+
+Com isso, pegamos esse vetor e utilizamos a seguinte formula para calcular a força gravitacional:
+
+```forca_gravitacional = (c)/hipotenusa```
+
+Com essa força descoberta, agora conseguimos calular a gravidade. Ela é dada pela normalização do vetor da direção vezes a força gravitacional.
+
+```gravidade = vetor_diferenca.normalize() * forca```
+
+Agora, se a bala for atraída pelo campo gravitacional do corpo celeste sua velociade será somada à gravidade, alterando a sua trajetória. 
+
+```velocidade_da_bala += gravidade```
+
+Esse código pode ser encotrado na classe ```CorpoCeleste``` no arquivo sprites.py
 
 # Informações extras
 O código do jogo está separado em 4 arquivos: variaveis.py, telas.py, sprites.py, roda.py.  
