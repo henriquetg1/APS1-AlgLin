@@ -1,4 +1,4 @@
-import pygame, math, random 
+import pygame, math
 from variaveis import *
 
 class Nave(pygame.sprite.Sprite):
