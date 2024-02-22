@@ -1,4 +1,4 @@
-from sprites import Nave, Bala, Estrela, CorpoCeleste, CorpoCeleste2, CorpoCeleste3, Alvo
+from sprites import Nave, Bala, CorpoCeleste, CorpoCeleste2, CorpoCeleste3, Alvo
 from variaveis import *
 import pygame
 
@@ -13,10 +13,6 @@ class Jogo:
         self.nave = Nave()
         self.all_sprites.add(self.nave)
         self.num_alvos = num_alvos
-
-        for i in range(50):
-            estrela = Estrela()
-            self.all_sprites.add(estrela)
 
         self.width = 900
         self.height = 675
@@ -66,7 +62,9 @@ class Jogo:
         return self
     
     def desenha_telas(self):
-        self.screen.fill(self.BLACK) 
+        # Desenha o fundo
+        self.screen.blit(self.background, (0, 0))
+        # Desenha os sprites
         self.all_sprites.draw(self.screen)
         fonte = pygame.font.Font(None, 36)
         texto_vidas = fonte.render(f'Tiros: {self.tiros - 1}', True, self.WHITE)
@@ -75,8 +73,10 @@ class Jogo:
 class TelaJogo1(Jogo):
     def __init__(self):
         super().__init__(1)
+        self.background = pygame.image.load("assets\img\ceu-estrelado.jpeg").convert()
+        self.background = pygame.transform.scale(self.background, (self.width, self.height))
         self.alvo = Alvo((self.width // 2 + 150, self.height // 2 - 300))
-        self.corpo_celeste = CorpoCeleste((self.width // 2 - 50 , self.height // 2))  
+        self.corpo_celeste = CorpoCeleste((self.width // 2 - 50, self.height // 2))  
         self.all_sprites.add(self.alvo, self.corpo_celeste)
 
     def desenha_tela_inicial_gameover(self):    
@@ -85,11 +85,20 @@ class TelaJogo1(Jogo):
     def update(self):
         if self.num_alvos == 0:
             return TelaJogo2()
-        return super().update() 
-
+        return super().update()
+    
+    def desenha_telas(self):
+        self.screen.blit(self.background, (0, 0))
+        self.all_sprites.draw(self.screen)
+        fonte = pygame.font.Font(None, 36)
+        texto_vidas = fonte.render(f'Tiros: {self.tiros - 1}', True, self.WHITE)
+        self.screen.blit(texto_vidas, (10, 10))
+    
 class TelaJogo2(Jogo):
     def __init__(self):
         super().__init__(2)
+        self.background = pygame.image.load("assets\img\ceu-estrelado.jpeg").convert()
+        self.background = pygame.transform.scale(self.background, (self.width, self.height))
         self.alvo = Alvo((self.width // 2 + 300, self.height // 2 - 300))
         self.alvo2 = Alvo((self.width // 2 - 150, self.height // 2 - 300))
         self.corpo_celeste = CorpoCeleste((self.width // 2 - 240 , self.height // 2 + 60))  
@@ -102,17 +111,26 @@ class TelaJogo2(Jogo):
     def update(self):
         if self.num_alvos == 0:
             return TelaJogo3()
-        return super().update() 
+        return super().update()
+    
+    def desenha_telas(self):
+        self.screen.blit(self.background, (0, 0))
+        self.all_sprites.draw(self.screen)
+        fonte = pygame.font.Font(None, 36)
+        texto_vidas = fonte.render(f'Tiros: {self.tiros - 1}', True, self.WHITE)
+        self.screen.blit(texto_vidas, (10, 10))
 
 class TelaJogo3(Jogo):
     def __init__(self):
         super().__init__(3)
+        self.background = pygame.image.load("assets\img\ceu-estrelado.jpeg").convert()
+        self.background = pygame.transform.scale(self.background, (self.width, self.height))
         self.alvo = Alvo((self.width // 2 + 150, self.height // 2 - 300))
         self.alvo2 = Alvo((self.width // 2 - 150, self.height // 2 - 300))
         self.alvo3 = Alvo((self.width // 2 - 250, self.height // 2 - 300))
-        self.corpo_celeste = CorpoCeleste((self.width // 2 - 50 , self.height // 2))  
-        self.corpo_celeste2 = CorpoCeleste2((self.width // 2 + 50 , self.height // 2))  
-        self.corpo_celeste3 = CorpoCeleste3((self.width // 2 + 150 , self.height // 2))  
+        self.corpo_celeste = CorpoCeleste((self.width // 2 - 325 , self.height // 2 - 50))  
+        self.corpo_celeste2 = CorpoCeleste2((self.width // 2 + 25 , self.height // 2 + 50))  
+        self.corpo_celeste3 = CorpoCeleste3((self.width // 2 + 300 , self.height // 2 - 100))  
         self.all_sprites.add(self.corpo_celeste, self.corpo_celeste2, self.corpo_celeste3, self.alvo, self.alvo2, self.alvo3)
 
     def desenha_tela_inicial_gameover(self):
@@ -121,7 +139,14 @@ class TelaJogo3(Jogo):
     def update(self):
         if self.num_alvos == 0:
             return TelaVenceu()
-        return super().update() 
+        return super().update()
+    
+    def desenha_telas(self):
+        self.screen.blit(self.background, (0, 0))
+        self.all_sprites.draw(self.screen)
+        fonte = pygame.font.Font(None, 36)
+        texto_vidas = fonte.render(f'Tiros: {self.tiros - 1}', True, self.WHITE)
+        self.screen.blit(texto_vidas, (10, 10))
 
 class TelaInicial(Jogo):
     def __init__(self):
